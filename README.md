@@ -1,7 +1,8 @@
 # Ex. No:1b 			Study of Client Server Chat Applications
-
+# Name: Ritika S
+# Reg no: 212225220086
 ## Aim: 
-To perform a study on Client Server Chat Applications
+To implement a program on Client Server Chat Applications
 ## Introduction:
 Client-server chat applications are a category of networked software that enables real-time communication between users over a network. This study explores the key components, architecture, and considerations in the development of client-server chat applications, highlighting their significance and common implementation practices.
 Client-server chat applications are software systems that enable real-time communication between users over a network. These applications follow a client-server model, where one component (the server) manages connections and facilitates communication, while the other component (the client) interacts with the server to send and receive messages. Below are the fundamental aspects and components involved in the basics of client-server chat applications:
@@ -72,9 +73,72 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 Client-server chat applications are versatile tools that facilitate real-time communication between users over a network. They incorporate various components, including server-side and client-side elements, and must consider factors such as security, scalability, and concurrency. As technology continues to advance, client-server chat applications remain integral for collaborative communication in various domains.
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
-
+## Program:
+```
+import socket
+import threading
+import time
+def server_part():
+    s = socket.socket()
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    host = input("Enter host for server (e.g. 127.0.0.1): ")
+    port = 8080
+    s.bind((host, port))
+    print("\nWaiting for connection...\n")
+    s.listen(1)
+    conn, addr = s.accept()
+    print(addr, "has connected to the server\n")
+    while True:
+        try:
+            message = input("Server >> ")
+            conn.send(message.encode())
+            if message.lower() == "bye":
+                break
+            incoming_message = conn.recv(1024).decode()
+            if not incoming_message:
+                break
+            print("Client :", incoming_message, "\n")
+        except:
+            break
+    conn.close()
+    s.close()
+def client_part():
+    time.sleep(2)
+    s = socket.socket()
+    host = input("Enter server IP to connect: ")
+    port = 8080
+    try:
+        s.connect((host, port))
+    except:
+        print("Connection failed")
+        return
+    print("Connected to chat server\n")
+    while True:
+        try:
+            incoming_message = s.recv(1024).decode()
+            if not incoming_message:
+                break
+            print("Server :", incoming_message, "\n")
+            if incoming_message.lower() == "bye":
+                break
+            message = input("Client >> ")
+            s.send(message.encode())
+            if message.lower() == "bye":
+                break
+        except:
+            break
+    s.close()
+t1 = threading.Thread(target=server_part)
+t2 = threading.Thread(target=client_part)
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+```
+# Output:
+<img width="953" height="657" alt="Screenshot 2026-04-28 235650" src="https://github.com/user-attachments/assets/f6f7e046-d34f-4cf9-aa14-32e9ed838a40" />
 
 ## Result:
 
-Thus the study on Client Server Chat Applications has been performed
+Thus, the implementation of a program on Client Server Chat Applications has been performed successfully.
 
